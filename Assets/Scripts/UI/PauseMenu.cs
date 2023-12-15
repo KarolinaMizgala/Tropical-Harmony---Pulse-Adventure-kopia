@@ -10,10 +10,11 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] private GameObject muteButton;
     [SerializeField] private GameObject unmuteButton;
+    [SerializeField] private GameObject pauseUI;
 
     public void onResumeClick()
     {
-        gameObject.SetActive(false);
+        pauseUI.SetActive(false);
     }
     public void onMuteClick()
     {

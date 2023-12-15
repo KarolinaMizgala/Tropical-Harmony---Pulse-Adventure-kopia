@@ -17,6 +17,8 @@ public class MainMenu : MonoBehaviour
     [Inject] private WebSocketClient webSocketClient;
     [Inject] private SceneService sceneService;
     [Inject] private SceneChanger sceneChanger;
+    [Inject] private DialogSystem dialogSystem;
+    [Inject] private GameModeController gameModeController;
 
     private float heartRate;
     private float restThreshold = 100f;
@@ -51,9 +53,18 @@ public class MainMenu : MonoBehaviour
                 }
             }
         }
+        if (Application.internetReachability != NetworkReachability.NotReachable)
+        {
+            playButton.SetActive(true);
+           
+        }
+    }
+    private void Start()
+    {
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             playButton.SetActive(false);
+            dialogSystem.ShowConfirmationDialog("You are not connected to the internet. Do you want to start the game manually?", onManualClick, null);
         }
     }
 
@@ -61,7 +72,7 @@ public class MainMenu : MonoBehaviour
     {
         if (inputField != null)
         {
-
+            gameModeController.SetGameMode(GameMode.ServerMode);
             await webSocketClient.ConnectAsync(inputField.text);
 
         }
@@ -72,6 +83,7 @@ public class MainMenu : MonoBehaviour
         inputField.gameObject.SetActive(false);
         controllerButtonContainer.SetActive(false);
         manualButtonContainer.SetActive(true);
+        gameModeController.SetGameMode(GameMode.ManualMode);
     }
 
     public void onRestfulClick()

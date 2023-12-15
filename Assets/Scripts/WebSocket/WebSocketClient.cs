@@ -11,6 +11,7 @@ using NativeWebSocket;
 using Zenject;
 using System.Globalization;
 using UnityEngine.Events;
+using System.Xml;
 
 public class WebSocketClient : MonoBehaviour
 {
@@ -19,18 +20,23 @@ public class WebSocketClient : MonoBehaviour
 
     [Inject] private SceneService sceneService;
     [Inject] private SceneChanger changer;
-
+    [Inject] private DialogSystem dialogSystem;
+    
+    private string clientId;
     public async void Connect(string uniqueId)
     {
         // Sprawdzamy, czy wprowadzone ID ró¿ni siê od bie¿¹cego ID
-      
+             clientId = uniqueId;
             await ConnectAsync(uniqueId);
    
     }
-
+    public async void Reconnect()
+    {
+        await ConnectAsync(clientId);
+    }
     public async Task ConnectAsync(string uniqueId)
     {
-        websocket = new WebSocket($"ws://localhost:8080/ws/{uniqueId}");
+        websocket = new WebSocket($"wss://free.blr2.piesocket.com/v3/1?api_key=OXAlmQ71QwVgQEwYxTzmqnGUrw6Cg0TfOmkAVmoU&notify_self=1");
 
         websocket.OnOpen += () =>
         {
@@ -50,12 +56,13 @@ public class WebSocketClient : MonoBehaviour
         websocket.OnError += (e) =>
         {
             Debug.Log("Error! " + e);
+            dialogSystem.ShowConfirmationDialog("Connection failed. Do you want to try connecting again?", Reconnect, null);
         };
 
         websocket.OnClose += (e) =>
         {
             Debug.Log("Connection closed!");
-           
+            dialogSystem.ShowConfirmationDialog("The connection has been lost. Do you want to reconnect?", Reconnect, null);
         };
 
         websocket.OnMessage += (bytes) =>
