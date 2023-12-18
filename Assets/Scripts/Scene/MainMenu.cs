@@ -64,11 +64,11 @@ public class MainMenu : MonoBehaviour
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             playButton.SetActive(false);
-            dialogSystem.ShowConfirmationDialog("You are not connected to the internet. Do you want to start the game manually?", onManualClick, null);
+            dialogSystem.ShowConfirmationDialog("You are not connected to the internet. Do you want to start the game manually?", OnManualClick, null);
         }
     }
 
-    public async void onPlayClick()
+    public async void OnPlayClick()
     {
         if (inputField != null)
         {
@@ -78,7 +78,7 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public void onManualClick()
+    public void OnManualClick()
     {
         inputField.gameObject.SetActive(false);
         controllerButtonContainer.SetActive(false);
@@ -86,13 +86,16 @@ public class MainMenu : MonoBehaviour
         gameModeController.SetGameMode(GameMode.ManualMode);
     }
 
-    public void onRestfulClick()
+    public void OnRestfulClick()
     {
         sceneChanger.ChangeRestfulScene();
     }
-    public void onEnergeticClick()
+    public void OnEnergeticClick()
     {
         sceneChanger.ChangeEnergeticScene();
     }
-
+    public void OnExit()
+    {
+        Application.Quit();
+    }
 }

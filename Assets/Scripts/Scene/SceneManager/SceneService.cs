@@ -14,8 +14,7 @@ public class SceneService : MonoBehaviour
     }
 
     public void LoadScene(int sceneIndex)
-    {
-        StartCoroutine(LoadSceneAsync((SceneType)sceneIndex));
+    {        StartCoroutine(LoadSceneAsync((SceneType)sceneIndex));
     }
 
     public void LoadSceneAdditive(SceneType sceneType)
@@ -41,7 +40,16 @@ public class SceneService : MonoBehaviour
   
 
     private IEnumerator LoadSceneAsync(SceneType sceneType)
+
     {
+        var canvas = GameObject.Find("Canvas");
+
+        GameObject loadingPrefab = Resources.Load<GameObject>("Prefab/Loading"); // Ustaw nazwê prefabu LoadingPrefab
+
+        if (loadingPrefab != null)
+        {
+            GameObject loadingInstance = Instantiate(loadingPrefab, canvas.transform); // Tworzymy instancjê LoadingPrefab
+        }
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync((int)sceneType);
 
         while (!asyncOperation.isDone)

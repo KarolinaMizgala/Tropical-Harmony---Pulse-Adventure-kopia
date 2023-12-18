@@ -10,9 +10,9 @@ public class InteractiveSystem : MonoBehaviour
     {
         if (Time.timeScale == 0)
         {
-            button.transform.DOLocalMoveY(11f, 0.1f).SetUpdate(true).OnComplete(() =>
+            button.transform.DOScale(0.7f, 0.1f).SetUpdate(true).OnComplete(() =>
             {
-                button.transform.DOLocalMoveY(0f, 0.1f).SetUpdate(true).OnComplete(() =>
+                button.transform.DOScale(1f, 0.1f).SetUpdate(true).OnComplete(() =>
                 {
                     button.onInteractionFinished.Invoke();
                 });
@@ -22,8 +22,8 @@ public class InteractiveSystem : MonoBehaviour
         }
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(button.transform.DOLocalMoveY(11f, 0.1f));
-        sequence.Append(button.transform.DOLocalMoveY(0f, 0.1f));
+        sequence.Append(button.transform.DOScale(0.7f, 0.1f));
+        sequence.Append(button.transform.DOScale(1f, 0.1f));
         sequence.AppendCallback(() => button.onInteractionFinished.Invoke());
     }
 }

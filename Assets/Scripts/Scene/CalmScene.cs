@@ -32,7 +32,8 @@ public class CalmScene : MonoBehaviour
 
    private bool shouldChangeScene = true;
 
-  
+  private bool isModeChanged = false;
+    private GameMode gameMode;
 
     private void Awake()
     {
@@ -40,14 +41,19 @@ public class CalmScene : MonoBehaviour
         {
             ManualModeUI.SetActive(false);
             ServerModeUI.SetActive(true);
+            gameMode = GameMode.ServerMode;
+
         }
         else
         {
             ManualModeUI.SetActive(true);
             ServerModeUI.SetActive(false);
+            gameMode = GameMode.ManualMode;
         }
 
         player = GameObject.FindGameObjectWithTag("Player");
+    
+       
     }
     void Update()
     {
@@ -84,6 +90,11 @@ public class CalmScene : MonoBehaviour
             pauseMenu.SetActive(!pauseMenuActive);
             gameUI.SetActive(pauseMenuActive);
             pauseMenuActive = !pauseMenuActive;
+        }
+        if(gameModeController.GetGameMode()==GameMode.ManualMode && gameMode!=GameMode.ManualMode)
+        {
+           ManualModeUI.SetActive(true);
+            ServerModeUI.SetActive(false);
         }
     }
     private void OnEnable()
