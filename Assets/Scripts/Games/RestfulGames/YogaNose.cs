@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class YogaNose : MonoBehaviour
 {
@@ -26,23 +27,63 @@ public class YogaNose : MonoBehaviour
     [SerializeField] private GameObject in1Object;
     [SerializeField] private GameObject out2Object;
 
+    [Inject] LevelSystem levelSystem;
+    [Inject] DialogSystem dialogSystem;
+    [Inject] SceneService sceneService;
 
     private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f);
     private Color activeColor = new Color(0.98f, 0.95f, 0.82f);
-
+private bool gameStarted = false;
     private int repetitions = 0;
-    private void Start()
+    private IEnumerator Start()
     {
         SetBackground(inObject, activeColor, true);
         SetBackground(outObject, deactiveColor, false);
         SetBackground(in1Object, deactiveColor, false);
         SetBackground(out2Object, deactiveColor, false);
+        var toolTip = GameObject.Find("Tooltip");
+
+        // Czekaj, aż tooltip stanie się nieaktywny
+        while (toolTip.activeSelf)
+        {
+            yield return null;
+        }
+
+        // Odliczaj 3 sekundy
+        for (int i = 3; i > 0; i--)
+        {
+            command.text = i.ToString();
+            yield return new WaitForSeconds(1f);
+        }
+        repetitions = 0;
+        // Rozpocznij grę
+        gameStarted = true;
+        yield return null;
     }
     void Update()
     {
-        if (repetitions >= 7)
+        if (!gameStarted)
         {
             return;
+        }
+
+        GameLogic();
+    }
+    void Restart()
+    {
+        repetitions = 0;
+        GameLogic();
+    }
+    void GameLogic()
+    {
+        
+
+        if (repetitions >= 28)
+        {
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
+            levelSystem.AddPoints(10);
+            return;
+            
         }
 
         timer += Time.deltaTime; // zwi�kszamy timer o czas, kt�ry up�yn�� od ostatniej klatki
@@ -104,5 +145,9 @@ public class YogaNose : MonoBehaviour
         textCommand.color = color;
         var textTime = gameObject.transform.GetChild(2).GetComponent<TMP_Text>();
         textTime.color = color;
+    }
+    private void Back()
+    {
+        sceneService.LoadScene(SceneType.RestfulScene);
     }
 }

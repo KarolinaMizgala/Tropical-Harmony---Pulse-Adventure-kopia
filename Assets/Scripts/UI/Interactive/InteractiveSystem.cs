@@ -2,10 +2,20 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
 
+/// <summary>
+/// Class representing an interactive system for animating button presses.
+/// </summary>
 public class InteractiveSystem : MonoBehaviour
 {
+    /// <summary>
+    /// Event triggered when the interaction with the button is finished.
+    /// </summary>
     public static UnityEvent onInteractionFinished;
 
+    /// <summary>
+    /// Animates the pressing of an InteractiveButton.
+    /// </summary>
+    /// <param name="button">The InteractiveButton to animate.</param>
     public static void AnimateButtonPressing(InteractiveButton button)
     {
         if (Time.timeScale == 0)

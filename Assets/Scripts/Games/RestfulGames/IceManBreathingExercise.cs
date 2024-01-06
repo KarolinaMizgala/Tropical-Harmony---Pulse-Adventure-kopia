@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class IceManBreathingExercise : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class IceManBreathingExercise : MonoBehaviour
     [SerializeField] private GameObject hold1Object;
     [SerializeField] private GameObject hold2Object;
 
+    [Inject] LevelSystem levelSystem;
+    [Inject] DialogSystem dialogSystem;
+    [Inject] SceneService sceneService;
 
     private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f);
     private Color activeColor = new Color(0.98f, 0.95f, 0.82f);
@@ -32,9 +36,24 @@ public class IceManBreathingExercise : MonoBehaviour
     private bool isCounting = false;
     TimeSpan timeSpan;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        var toolTip = GameObject.Find("Tooltip");
+        while (toolTip.activeSelf)
+        {
+            yield return null;
+        }
+
+        // Odliczaj 3 sekundy
+        for (int i = 3; i > 0; i--)
+        {
+            command.text = i.ToString();
+            yield return new WaitForSeconds(1f);
+        }
+
+        // Rozpocznij grê
         FirtsRound();
+        yield return null;
     }
 
     private void FirtsRound()
@@ -103,7 +122,10 @@ public class IceManBreathingExercise : MonoBehaviour
         isCounting = false;
         ThirdRound();
     }
-
+    void Back()
+    {
+        sceneService.LoadScene(SceneType.RestfulScene);
+    }
     private void ThirdRound()
     {
         TipText.SetActive(false);
@@ -137,7 +159,10 @@ public class IceManBreathingExercise : MonoBehaviour
         {
             SwapBackgroundAndCommand(outObject, hold2Object, "Hold");
         });
-        sequence.Append(circle.transform.DOScale(1.9f, timeHold2));
+        sequence.Append(circle.transform.DOScale(1f, timeHold2)).AppendCallback(() => {
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound, Back);
+            levelSystem.AddPoints(10);
+        }); 
     }
 
     private void SetObjectProperties(GameObject gameObject, float time, Color color, bool status)

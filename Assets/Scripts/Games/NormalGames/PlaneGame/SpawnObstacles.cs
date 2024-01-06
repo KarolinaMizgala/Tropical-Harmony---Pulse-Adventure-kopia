@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+using Zenject.Asteroids;
 
 public class SpawnObstacles : MonoBehaviour
 {
@@ -10,12 +12,31 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private float maxY;
     [SerializeField] private float minY;
     [SerializeField] private float timeBetweenSpawn;
-
+    [SerializeField] private GameObject toolTip;
+    private bool gameStarted = false;
     private float timeSpawn;
-
-    void Start()
+    private IEnumerator Start()
     {
-        if(Time.time > timeSpawn)
+
+        // Czekaj, a¿ tooltip stanie siê nieaktywny
+        while (toolTip.activeSelf)
+        {
+            yield return null;
+        }
+
+        
+        // Rozpocznij grê
+        gameStarted = true;
+       
+    }
+ 
+    void Update()
+    {
+        if (!gameStarted)
+        {
+            return;
+        }
+        if (Time.time > timeSpawn)
         {
             Spawn();
             timeSpawn = Time.time + timeBetweenSpawn;

@@ -15,6 +15,8 @@ public class Board : MonoBehaviour
     private DialogSystem dialogSystem;
     [Inject]
     private SceneService sceneManager;
+    [Inject]
+    private LevelSystem levelSystem;
 
     private List<Tile> tileList;
 
@@ -100,6 +102,7 @@ public class Board : MonoBehaviour
         {
             Debug.Log("GameClear");
             StopCoroutine("CalculatePlaytime");
+            levelSystem.AddPoints(5);
             dialogSystem.ShowConfirmationDialog("Congratulations, you've completed the game! Would you like to try again?", () =>
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);

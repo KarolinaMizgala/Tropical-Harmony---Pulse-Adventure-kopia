@@ -8,21 +8,29 @@ public class GameOver : MonoBehaviour
 {
     [Inject] DialogSystem dialogSystem;
     [Inject] SceneService sceneService;
+    bool isDialogShowing = false;
 
     void Update()
     {
-        if(GameObject.FindGameObjectsWithTag("Player")== null)
+        if(GameObject.FindGameObjectWithTag("Player")== null)
         {
-            dialogSystem.ShowConfirmationDialog("You lost. Do you want to try again?", Restart, Back);
+            if(!isDialogShowing)
+            {
+                isDialogShowing = true;
+                dialogSystem.ShowConfirmationDialog("You lost. Do you want to try again?", Restart, Back);
+            }
+            
         }
     }
     private void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        isDialogShowing = false;
     }
 
     private void Back()
     {
+        isDialogShowing = false;
         sceneService.LoadScene(SceneType.Energetic);
     }
 }

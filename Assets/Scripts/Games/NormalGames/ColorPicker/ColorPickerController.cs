@@ -1,30 +1,41 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Zenject;
 
 public class ColorPickerController : MonoBehaviour
 {
 
 	[SerializeField]
-	private	Color[]			colorPalette;		
+	private Color[] colorPalette;
 	[SerializeField]
-	private	float			difficultyModifier;
+	private float difficultyModifier;
 
-	[SerializeField][Range(2, 5)]
-	private	int				blockCount = 2;		
 	[SerializeField]
-	private	BlockSpawner	blockSpawner;
+	[Range(2, 5)]
+	private int blockCount = 2;
+	[SerializeField]
+	private BlockSpawner blockSpawner;
 
-	private	List<Block>		blockList = new List<Block>();
+	[Inject] DialogSystem dialogSystem;
+	[Inject] LevelSystem levelSystem;
 
-	private	Color			currentColor;		
-	private	Color			otherOneColor;		
+	private List<Block> blockList = new List<Block>();
 
-	private	int				otherBlockIndex;	
+	private Color currentColor;
+	private Color otherOneColor;
 
+	private int otherBlockIndex;
+   private float gameTime = 0f;
+
+    private void Update()
+    {
+        gameTime += Time.deltaTime;
+    }
 	private void Awake()
 	{
 		blockList = blockSpawner.SpawnBlocks(blockCount);
-		for ( int i = 0; i < blockList.Count; ++ i )
+		for (int i = 0; i < blockList.Count; ++i)
 		{
 			blockList[i].Setup(this);
 		}
@@ -38,15 +49,15 @@ public class ColorPickerController : MonoBehaviour
 
 		currentColor = colorPalette[Random.Range(0, colorPalette.Length)];
 
-		float diff = (1.0f/255.0f) * difficultyModifier;
+		float diff = (1.0f / 255.0f) * difficultyModifier;
 		otherOneColor = new Color(currentColor.r - diff, currentColor.g - diff, currentColor.b - diff);
 
 		otherBlockIndex = Random.Range(0, blockList.Count);
-		Debug.Log(otherBlockIndex);		
+		Debug.Log(otherBlockIndex);
 
-		for ( int i = 0; i < blockList.Count; ++ i )
+		for (int i = 0; i < blockList.Count; ++i)
 		{
-			if ( i == otherBlockIndex )
+			if (i == otherBlockIndex)
 			{
 				blockList[i].Color = otherOneColor;
 			}
@@ -59,17 +70,24 @@ public class ColorPickerController : MonoBehaviour
 
 	public void CheckBlock(Color color)
 	{
-	
-		if ( blockList[otherBlockIndex].Color == color )
+
+		if (blockList[otherBlockIndex].Color == color)
 		{
 			SetColors();
-			Debug.Log("색상 일치. 점수 획득 등의 처리..");
 		}
 		else
 		{
-			Debug.Log("실패..");
-			UnityEditor.EditorApplication.ExitPlaymode();
+			if(gameTime > 1f)
+			{
+				levelSystem.AddPoints(1);
+			}
+			dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, null);
 		}
+	}
+	private void Restart()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		gameTime = 0f;
 	}
 }
 

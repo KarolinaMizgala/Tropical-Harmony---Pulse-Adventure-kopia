@@ -1,52 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Zenject;
-using Zenject.SpaceFighter;
-
+/// <summary>
+/// Class representing an energetic scene in the game.
+/// </summary>
 public class EnergeticScene : MonoBehaviour
 {
-    [Inject] WebSocketClient webSocketClient;
-    [Inject] SceneService sceneService;
-    [Inject] DialogSystem dialogSystem;
-    [Inject] GameModeController gameModeController;
-    [Inject] PlayerPositionManager playerPositionManager;
+    [Inject] WebSocketClient webSocketClient; ///< The WebSocket client.
+    [Inject] SceneService sceneService; ///< The scene service.
+    [Inject] DialogSystem dialogSystem; ///< The dialog system.
+    [Inject] GameModeController gameModeController; ///< The game mode controller.
+    [Inject] PlayerPositionManager playerPositionManager; ///< The player position manager.
 
-    [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private GameObject gameUI;
-    [SerializeField] private TMP_Text bmp;
+    [SerializeField] private GameObject pauseMenu; ///< The pause menu.
+    [SerializeField] private GameObject gameUI; ///< The game UI.
+    [SerializeField] private TMP_Text bmp; ///< The text component for displaying the heart rate.
 
-    [SerializeField] private GameObject ManualModeUI;
-    [SerializeField] private GameObject ServerModeUI;
+    [SerializeField] private GameObject ManualModeUI; ///< The UI for manual mode.
+    [SerializeField] private GameObject ServerModeUI; ///< The UI for server mode.
 
-    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject player; ///< The player.
 
-    private float restThreshold = 100f;
-    private float timeThreshold = 120f;  // Czas (w sekundach) powy¿ej 110, aby zmieniæ scenê
-    private float elapsedTimeAboveThreshold = 0f;
-    private bool pauseMenuActive = false;
+    private float restThreshold = 100f; ///< The rest threshold.
+    private float timeThreshold = 120f; ///< The time threshold for changing the scene.
+    private float elapsedTimeAboveThreshold = 0f; ///< The elapsed time above the threshold.
+    private bool pauseMenuActive = false; ///< Whether the pause menu is active.
 
-    private bool isChanged = false;
-    private bool isDialogShowing = false;
+    private bool isChanged = false; ///< Whether the scene has been changed.
+    private bool isDialogShowing = false; ///< Whether the dialog is showing.
 
-    private bool shouldChangeScene = true;
+    private bool shouldChangeScene = true; ///< Whether the scene should be changed.
 
+    private bool isModeChanged = false; ///< Whether the mode has been changed.
+    private GameMode gameMode; ///< The current game mode.
 
-
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
     private void Awake()
     {
         if (gameModeController.GetGameMode() == GameMode.ServerMode)
         {
             ManualModeUI.SetActive(false);
             ServerModeUI.SetActive(true);
+            gameMode = GameMode.ServerMode;
         }
         else
         {
             ManualModeUI.SetActive(true);
             ServerModeUI.SetActive(false);
+            gameMode = GameMode.ManualMode;
         }
+
+        player = GameObject.FindGameObjectWithTag("Player");
+  
     }
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
     void Update()
     {
         if (webSocketClient != null && webSocketClient.IsConnected())
@@ -83,7 +94,15 @@ public class EnergeticScene : MonoBehaviour
             gameUI.SetActive(pauseMenuActive);
             pauseMenuActive = !pauseMenuActive;
         }
+        if (gameModeController.GetGameMode() == GameMode.ManualMode && gameMode != GameMode.ManualMode)
+        {
+            ManualModeUI.SetActive(true);
+            ServerModeUI.SetActive(false);
+        }
     }
+    /// <summary>
+    /// This function is called when the object becomes enabled and active.
+    /// </summary>
     private void OnEnable()
     {
         if (player != null)
@@ -99,6 +118,9 @@ public class EnergeticScene : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// This function is called when the behaviour becomes disabled or inactive.
+    /// </summary>
     private void OnDisable()
     {
         if (player != null)
@@ -106,6 +128,9 @@ public class EnergeticScene : MonoBehaviour
             playerPositionManager.SavePlayerPosition(player.transform.position);
         }
     }
+    /// <summary>
+    /// Show a dialog for changing the scene.
+    /// </summary>
     private void ShowChangeSceneDialog()
     {
         if (isDialogShowing) return;
@@ -113,11 +138,17 @@ public class EnergeticScene : MonoBehaviour
         dialogSystem.ShowConfirmationDialog("The heart rate is elevated. Consider transitioning to a calm scene for an optimal experience. Would you like to proceed to a calm scene?", ChangeScene, ResetIsDialogShowing);
 
     }
+    // <summary>
+    /// Reset the dialog showing flag.
+    /// </summary>
     private void ResetIsDialogShowing()
     {
         shouldChangeScene = false;
         isDialogShowing = false;
     }
+    /// <summary>
+    /// Change the scene.
+    /// </summary>
     private void ChangeScene()
     {
         ResetIsDialogShowing();
@@ -126,7 +157,9 @@ public class EnergeticScene : MonoBehaviour
         sceneService.LoadScene(SceneType.RestfulScene);
         isChanged = false;
     }
-
+    /// <summary>
+    /// Handle the button click event.
+    /// </summary>
     public void onButtonClick()
     {
         sceneService.LoadScene(SceneType.RestfulScene);

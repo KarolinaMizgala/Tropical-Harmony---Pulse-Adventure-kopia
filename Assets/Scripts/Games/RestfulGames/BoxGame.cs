@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+using Zenject;
 
 public class BoxGame : MonoBehaviour
 {
@@ -20,7 +20,9 @@ public class BoxGame : MonoBehaviour
     [SerializeField] private GameObject hold1Object;
     [SerializeField] private GameObject hold2Object;
 
-
+[Inject] LevelSystem levelSystem;
+[Inject] DialogSystem dialogSystem;
+    [Inject] SceneService sceneService;
     private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f);
     private Color activeColor = new Color(0.98f, 0.95f, 0.82f);
 
@@ -30,9 +32,24 @@ public class BoxGame : MonoBehaviour
 
     private float time = 4f;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        var toolTip = GameObject.Find("Tooltip");
+        while (toolTip.activeSelf)
+        {
+            yield return null;
+        }
+
+        // Odliczaj 3 sekundy
+        for (int i = 3; i > 0; i--)
+        {
+            command.text = i.ToString();
+            yield return new WaitForSeconds(1f);
+        }
+
+        // Rozpocznij grę
         FirtsRound();
+        yield return null;
     }
     private void Update()
     {
@@ -90,7 +107,9 @@ public class BoxGame : MonoBehaviour
         {
             SwapBackgroundAndCommand(outObject, hold2Object, "Hold");
         });
-        sequence.Append(circle.transform.DOLocalMove(new Vector3(-197.1f, -197.1f, 0), time)).AppendCallback(() => { isCounting = false; });
+        sequence.Append(circle.transform.DOLocalMove(new Vector3(-197.1f, -197.1f, 0), time)).AppendCallback(() => { isCounting = false; 
+        dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound, BackLastScene); 
+         levelSystem.AddPoints(10);});
 
     }
 
@@ -110,5 +129,9 @@ public class BoxGame : MonoBehaviour
         textCommand.color = color;
         var textTime = gameObject.transform.GetChild(2).GetComponent<TMP_Text>();
         textTime.color = color;
+    }
+    private void BackLastScene()
+    {
+        sceneService.LoadScene(SceneType.RestfulScene);
     }
 }

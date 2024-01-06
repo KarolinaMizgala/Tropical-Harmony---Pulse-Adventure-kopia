@@ -1,16 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class representing a scene loading mechanism.
+/// </summary>
 public class SceneLoading : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed = 360f; // szybkoœæ obrotu w stopniach na sekundê
+    /// <summary>
+    /// The speed of rotation in degrees per second.
+    /// </summary>
+    [SerializeField] private float rotationSpeed = 360f;
+
+    /// <summary>
+    /// The image to be rotated.
+    /// </summary>
     [SerializeField] private Image image;
 
+    /// <summary>
+    /// Updates the rotation of the image every frame.
+    /// </summary>
     void Update()
     {
-        // Obracamy obiekt o rotationSpeed stopni na sekundê
+        // Rotate the object by rotationSpeed degrees per second
         image.transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
     }
 }

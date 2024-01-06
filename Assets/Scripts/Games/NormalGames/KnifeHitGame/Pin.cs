@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class Pin : MonoBehaviour
 {
@@ -8,9 +10,18 @@ public class Pin : MonoBehaviour
 	[SerializeField]
 	private	GameObject	hitEffectPrefab;
 
+	[Inject] DialogSystem dialogSystem;
+	[Inject] LevelSystem levelSystem;
+
 	private	Movement2D	movement2D;
 
-	private void Awake()
+    private float gameTime = 0f;
+
+    private void Update()
+    {
+        gameTime += Time.deltaTime;
+    }
+    private void Awake()
 	{
 		movement2D = GetComponent<Movement2D>();
 	}
@@ -22,7 +33,7 @@ public class Pin : MonoBehaviour
 			movement2D.MoveTo(Vector3.zero);
 			transform.SetParent(collision.transform);
 
-			Instantiate(hitEffectPrefab, hitEffectSpawnPoint.position, hitEffectSpawnPoint.rotation);
+
 
 			Camera.main.GetComponent<ShakeCamera>().Shake(0.1f, 1);
 
@@ -31,7 +42,19 @@ public class Pin : MonoBehaviour
 		else if ( collision.CompareTag("Pin") )
 		{
 			Debug.Log("GameOver");
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			if(gameTime > 2f)
+			{
+				levelSystem.AddPoints(5);
+				gameTime = 0;
+			}
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, null);
 		}
+
+	
 	}
+
+	public void Restart()
+	{
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }	
 }

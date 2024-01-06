@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GameSceneManager">
+    <Position X="17" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAACgAAAAAAAAAAIAAAAAQAIAAAAACAAAABCE=</HashCode>
+      <FileName>Assets\Scripts\Games\GameSceneManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LevelSystem">
+    <Position X="9" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAQgAAAAAAAAAABAAAAAAABAAAAAABAAAA=</HashCode>
+      <FileName>Assets\Scripts\LevelSystem\LevelSytem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneService">
+    <Position X="16.5" Y="5.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="SceneService.SceneLoadedHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Scene\SceneManager\SceneService.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AABAAAEAQAAQAAACAAAACAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Scene\SceneManager\SceneService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneLoading">
+    <Position X="18.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Scene\SceneLoading.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScoreManager">
+    <Position X="12.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAQAACAAIAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Games\NormalGames\PlaneGame\ScoreManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebSocketClient">
+    <Position X="10.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAgAABgIIABAACAAAIAAAAiAAAAAgAAAAAIABAA=</HashCode>
+      <FileName>Assets\Scripts\WebSocket\WebSocketClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -6,49 +6,97 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
+/// <summary>
+/// Class representing the main menu.
+/// </summary>
 public class MainMenu : MonoBehaviour
 {
+    /// <summary>
+    /// Input field for user input.
+    /// </summary>
     [SerializeField] TMP_InputField inputField;
+
+    /// <summary>
+    /// Play button GameObject.
+    /// </summary>
     [SerializeField] private GameObject playButton;
 
+    /// <summary>
+    /// Controller button container GameObject.
+    /// </summary>
     [SerializeField] private GameObject controllerButtonContainer;
+
+    /// <summary>
+    /// Manual button container GameObject.
+    /// </summary>
     [SerializeField] private GameObject manualButtonContainer;
 
+    /// <summary>
+    /// WebSocket client for network communication.
+    /// </summary>
     [Inject] private WebSocketClient webSocketClient;
+
+    /// <summary>
+    /// Scene service for scene management.
+    /// </summary>
     [Inject] private SceneService sceneService;
-    [Inject] private SceneChanger sceneChanger;
+
+    /// <summary>
+    /// Dialog system for displaying dialogs.
+    /// </summary>
     [Inject] private DialogSystem dialogSystem;
+
+    /// <summary>
+    /// Game mode controller for controlling the game mode.
+    /// </summary>
     [Inject] private GameModeController gameModeController;
 
+    /// <summary>
+    /// Heart rate of the user.
+    /// </summary>
     private float heartRate;
+
+    /// <summary>
+    /// Threshold for rest heart rate.
+    /// </summary>
     private float restThreshold = 100f;
+
+    /// <summary>
+    /// Threshold for time.
+    /// </summary>
     private float timeThreshold = 120f;
+
+    /// <summary>
+    /// Elapsed time since the last scene change.
+    /// </summary>
     private float elapsedTime = 0f;
 
+    /// <summary>
+    /// Updates the scene based on the heart rate and elapsed time.
+    /// </summary>
     void Update()
     {
-        // Pobieranie têtna (przyjmujemy, ¿e jest to dostêpne w zmiennej heartRate)
-        // Replace this with your actual heart rate retrieval logic.
+
         if (webSocketClient.IsConnected())
         {
-            // Aktualizacja czasu
+            // Updating time
             elapsedTime += Time.deltaTime;
 
-            // SprawdŸ warunki zmiany sceny
+            // Check scene change conditions
             if (heartRate > restThreshold)
             {
                 if (elapsedTime >= timeThreshold)
                 {
-                    sceneChanger.ChangeRestfulScene();
+                    sceneService.LoadScene(SceneType.RestfulScene);
                     elapsedTime = 0f;
                 }
             }
             else if (heartRate <= restThreshold)
             {
-                // Resetuj czas, gdy têtno jest poni¿ej progu
+                // Reset time when heart rate is below threshold
                 if (elapsedTime >= timeThreshold)
                 {
-                    sceneChanger.ChangeEnergeticScene();
+                    sceneService.LoadScene(SceneType.Energetic);
                     elapsedTime = 0f;
                 }
             }
@@ -59,6 +107,10 @@ public class MainMenu : MonoBehaviour
            
         }
     }
+
+    /// <summary>
+    /// Checks the internet connectivity at the start of the game.
+    /// </summary>
     private void Start()
     {
         if (Application.internetReachability == NetworkReachability.NotReachable)
@@ -68,6 +120,9 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the play button click event.
+    /// </summary>
     public async void OnPlayClick()
     {
         if (inputField != null)
@@ -78,6 +133,9 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the manual button click event.
+    /// </summary>
     public void OnManualClick()
     {
         inputField.gameObject.SetActive(false);
@@ -86,14 +144,25 @@ public class MainMenu : MonoBehaviour
         gameModeController.SetGameMode(GameMode.ManualMode);
     }
 
+    /// <summary>
+    /// Handles the restful button click event.
+    /// </summary>
     public void OnRestfulClick()
     {
-        sceneChanger.ChangeRestfulScene();
+        sceneService.LoadScene(SceneType.RestfulScene);
     }
+
+    /// <summary>
+    /// Handles the energetic button click event.
+    /// </summary>
     public void OnEnergeticClick()
     {
-        sceneChanger.ChangeEnergeticScene();
+        sceneService.LoadScene(SceneType.Energetic);
     }
+
+    /// <summary>
+    /// Handles the exit button click event.
+    /// </summary>
     public void OnExit()
     {
         Application.Quit();

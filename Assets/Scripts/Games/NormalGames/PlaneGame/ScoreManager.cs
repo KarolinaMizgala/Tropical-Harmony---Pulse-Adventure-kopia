@@ -2,15 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Zenject.Asteroids;
 
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private GameObject toolTip;
     private float score;
-
-        void Update()
+    private bool gameStarted = false;
+    private IEnumerator Start()
     {
-      if(GameObject.FindGameObjectsWithTag("Player")!= null)
+        // Wyszukaj obiekt tooltip
+      
+
+        // Czekaj, a¿ tooltip stanie siê nieaktywny
+        while (toolTip.activeSelf)
+        {
+            yield return null;
+        }
+
+
+        // Rozpocznij grê
+        gameStarted = true;
+
+    }
+    void Update()
+    {
+        if (!gameStarted)
+        {
+            return;
+        }
+
+        if (GameObject.FindGameObjectWithTag("Player")!= null)
         {
             score += 1* Time.deltaTime;
             scoreText.text = ((int)score).ToString();

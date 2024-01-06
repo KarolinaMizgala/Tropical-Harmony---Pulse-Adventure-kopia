@@ -5,6 +5,8 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
+using Zenject.Asteroids;
 
 public class FourSevenEight : MonoBehaviour
 {
@@ -22,7 +24,10 @@ public class FourSevenEight : MonoBehaviour
     [SerializeField] private GameObject inObject;
     [SerializeField] private GameObject outObject;
     [SerializeField] private GameObject hold1Object;
-
+   
+    [Inject] LevelSystem levelSystem;
+    [Inject] DialogSystem dialogSystem;
+    [Inject] SceneService sceneService;
 
     private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f);
     private Color activeColor = new Color(0.98f, 0.95f, 0.82f);
@@ -43,12 +48,30 @@ public class FourSevenEight : MonoBehaviour
     private int timeHold = 7;
 
     bool isHold = false;
-    bool isOut = false; 
+    bool isOut = false;
+
+    private bool gameStarted = false;
     void Update()
+    {
+        if (!gameStarted)
+        {
+            return;
+        }
+        LogicGame();
+    }
+    void Restart()
+    {
+        cycleCount = 0;
+        isCounting = true;
+        LogicGame();
+    }
+        void LogicGame()
     {
         if (cycleCount >= 8) // jeśli wykonaliśmy już 16 cykli, nie robimy nic więcej
         { 
             isCounting = false;
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
+            levelSystem.AddPoints(10);
             return; }
 
         timer += Time.deltaTime; // zwiększamy timer o czas, który upłynął od ostatniej klatki
@@ -111,8 +134,26 @@ public class FourSevenEight : MonoBehaviour
             
         }
     }
-    private void Start()
+    private IEnumerator Start()
     {
+        // Wyszukaj obiekt tooltip
+       var  toolTip = GameObject.Find("Tooltip");
+
+        // Czekaj, aż tooltip stanie się nieaktywny
+        while (toolTip.activeSelf)
+        {
+            yield return null;
+        }
+
+        // Odliczaj 3 sekundy
+        for (int i = 3; i > 0; i--)
+        {
+            commandText.text = i.ToString();
+            yield return new WaitForSeconds(1f);
+        }
+
+        // Rozpocznij grę
+        gameStarted = true;
         commandText.text = "In";
         counter = timeIn;
         SetBackground(inObject, activeColor, true);
@@ -142,5 +183,9 @@ public class FourSevenEight : MonoBehaviour
         textCommand.color = color;
         var textTime = gameObject.transform.GetChild(2).GetComponent<TMP_Text>();
         textTime.color = color;
+    }
+    private void Back()
+    {
+        sceneService.LoadScene(SceneType.RestfulScene);
     }
 }
