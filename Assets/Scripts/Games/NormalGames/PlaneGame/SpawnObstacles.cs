@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
-using Zenject.Asteroids;
 
 public class SpawnObstacles : MonoBehaviour
 {
@@ -24,12 +21,12 @@ public class SpawnObstacles : MonoBehaviour
             yield return null;
         }
 
-        
+
         // Rozpocznij grê
         gameStarted = true;
-       
+
     }
- 
+
     void Update()
     {
         if (!gameStarted)
@@ -40,7 +37,7 @@ public class SpawnObstacles : MonoBehaviour
         {
             Spawn();
             timeSpawn = Time.time + timeBetweenSpawn;
-           
+
         }
     }
 

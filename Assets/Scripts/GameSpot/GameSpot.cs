@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class GameSpot : MonoBehaviour
 {
-    [Inject] SceneService sceneService; 
+    [Inject] SceneService sceneService;
     [Inject] DialogSystem dialogSystem;
     [SerializeField] private SceneType sceneType;
     private bool isDialogShown = false;
@@ -24,14 +22,14 @@ public class GameSpot : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
 
-            if(!isDialogShown)
+            if (!isDialogShown)
             {
                 isDialogShown = true;
                 PlayerPrefs.SetInt(dialogShownKey, 1);
                 dialogSystem.ShowConfirmationDialog(text, OnYesClick, null);
             }
 
-           
+
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -43,14 +41,14 @@ public class GameSpot : MonoBehaviour
     }
     private void OnYesClick()
     {
-      sceneService.SetPrevScene(sceneService.GetActivScene());
+        sceneService.SetPrevScene(sceneService.GetActivScene());
         sceneService.LoadScene(sceneType);
     }
-  
+
     public SceneType GetSceneType()
     {
         return sceneType;
     }
-  
-    
+
+
 }

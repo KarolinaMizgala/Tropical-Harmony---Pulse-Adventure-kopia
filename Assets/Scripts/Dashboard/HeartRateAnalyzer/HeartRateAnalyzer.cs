@@ -1,7 +1,6 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 using Zenject;
 
 public class HeartRateStatistics : MonoBehaviour
@@ -9,7 +8,7 @@ public class HeartRateStatistics : MonoBehaviour
     private List<float> heartRatesList = new List<float>();
     [Inject] private PulseStatsRecorder pulseStatsRecorder;
 
-    [SerializeField] private  TMPro.TMP_Text minimumHeartRate;
+    [SerializeField] private TMPro.TMP_Text minimumHeartRate;
     [SerializeField] private TMPro.TMP_Text maximumHeartRate;
     [SerializeField] private TMPro.TMP_Text averageHeartRate;
 

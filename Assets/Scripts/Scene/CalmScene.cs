@@ -34,9 +34,9 @@ public class CalmScene : MonoBehaviour
 
     private bool isModeChanged = false; ///< Whether the mode has been changed.
     private GameMode gameMode; ///< The current game mode.
-   public static bool isSceneOpened; ///< Whether the scene has been opened.
-  
- 
+    public static bool isSceneOpened; ///< Whether the scene has been opened.
+
+
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>

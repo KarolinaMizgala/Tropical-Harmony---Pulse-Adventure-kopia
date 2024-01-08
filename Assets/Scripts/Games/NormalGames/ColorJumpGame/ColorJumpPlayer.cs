@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Zenject.Asteroids;
-using Zenject.SpaceFighter;
 
 public class ColorJumpPlayer : MonoBehaviour
 {
@@ -26,7 +23,7 @@ public class ColorJumpPlayer : MonoBehaviour
     {
         while (true)
         {
-            if(Input.GetMouseButtonDown(0)) 
+            if (Input.GetMouseButtonDown(0))
             {
                 JumpTo();
             }
@@ -35,7 +32,7 @@ public class ColorJumpPlayer : MonoBehaviour
     }
     private void JumpTo()
     {
-        rb2D.velocity =new Vector2(rb2D.velocity.x,jumpForce);
+        rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);
     }
     private void ReverseXDir()
     {
@@ -71,6 +68,6 @@ public class ColorJumpPlayer : MonoBehaviour
     private void PlayerDie()
     {
         gameController.GameOver();
-       gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
@@ -27,6 +26,6 @@ public class CameraMovement : MonoBehaviour
         {
             return;
         }
-        transform.position += new Vector3( cameraSpeed * Time.deltaTime, 0, 0);
+        transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0);
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +26,7 @@ public class DashboardManager : MonoBehaviour
     }
     public void onExitButton()
     {
-        dialogSystem.ShowConfirmationDialog( "Are you sure you want to exit?",Back,null);
+        dialogSystem.ShowConfirmationDialog("Are you sure you want to exit?", Back, null);
     }
     private void Back()
     {
@@ -69,7 +67,7 @@ public class DashboardManager : MonoBehaviour
             int levelIndex = levels.IndexOf(level) + 1;
             if (levelIndex >= levelSystem.Level)
             {
-               
+
                 level.transform.Find("Circle").GetComponent<Image>().color = new Color(0.7764707f, 0.5450981f, 0.2862745f);
 
             }

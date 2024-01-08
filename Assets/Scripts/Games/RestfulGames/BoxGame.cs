@@ -1,8 +1,6 @@
 using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -20,8 +18,8 @@ public class BoxGame : MonoBehaviour
     [SerializeField] private GameObject hold1Object;
     [SerializeField] private GameObject hold2Object;
 
-[Inject] LevelSystem levelSystem;
-[Inject] DialogSystem dialogSystem;
+    [Inject] LevelSystem levelSystem;
+    [Inject] DialogSystem dialogSystem;
     [Inject] SceneService sceneService;
     private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f);
     private Color activeColor = new Color(0.98f, 0.95f, 0.82f);
@@ -92,7 +90,7 @@ public class BoxGame : MonoBehaviour
             sequence.Append(circle.transform.DOLocalMove(new Vector3(-197.1f, -197.1f, 0), time)).AppendCallback(() =>
             {
                 SwapBackgroundAndCommand(hold2Object, inObject, "In");
-            }); 
+            });
 
         }
         sequence.Append(circle.transform.DOLocalMove(new Vector3(-197.5f, 197.5f, 0), time)).AppendCallback(() =>
@@ -107,9 +105,12 @@ public class BoxGame : MonoBehaviour
         {
             SwapBackgroundAndCommand(outObject, hold2Object, "Hold");
         });
-        sequence.Append(circle.transform.DOLocalMove(new Vector3(-197.1f, -197.1f, 0), time)).AppendCallback(() => { isCounting = false; 
-        dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound, BackLastScene); 
-         levelSystem.AddPoints(10);});
+        sequence.Append(circle.transform.DOLocalMove(new Vector3(-197.1f, -197.1f, 0), time)).AppendCallback(() =>
+        {
+            isCounting = false;
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound, BackLastScene);
+            levelSystem.AddPoints(10);
+        });
 
     }
 

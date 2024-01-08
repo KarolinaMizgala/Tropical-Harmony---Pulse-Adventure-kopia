@@ -53,7 +53,7 @@ public class EnergeticScene : MonoBehaviour
         }
 
         player = GameObject.FindGameObjectWithTag("Player");
-  
+
     }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.

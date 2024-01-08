@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -12,14 +10,14 @@ public class GameOver : MonoBehaviour
 
     void Update()
     {
-        if(GameObject.FindGameObjectWithTag("Player")== null)
+        if (GameObject.FindGameObjectWithTag("Player") == null)
         {
-            if(!isDialogShowing)
+            if (!isDialogShowing)
             {
                 isDialogShowing = true;
                 dialogSystem.ShowConfirmationDialog("You lost. Do you want to try again?", Restart, Back);
             }
-            
+
         }
     }
     private void Restart()

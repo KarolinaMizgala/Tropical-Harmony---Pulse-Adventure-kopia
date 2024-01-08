@@ -17,6 +17,6 @@ public enum SceneType
     ColorJumpGame = 11, ///< The color jump game scene.
     TraiangleGame = 12, ///< The triangle game scene.
     Dashboard = 13 ///< The dashboard scene.
-    
+
     // Add other scenes here
 }

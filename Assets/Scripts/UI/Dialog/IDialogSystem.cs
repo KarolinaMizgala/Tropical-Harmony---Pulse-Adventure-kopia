@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// Interface for a dialog system.
 /// </summary>
-public interface IDialogSystem 
+public interface IDialogSystem
 {
     /// <summary>
     /// Shows a confirmation dialog with a specified message and actions for confirm and cancel.

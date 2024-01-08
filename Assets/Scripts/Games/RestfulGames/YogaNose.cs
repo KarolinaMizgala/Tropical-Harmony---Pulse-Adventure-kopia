@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +32,7 @@ public class YogaNose : MonoBehaviour
 
     private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f);
     private Color activeColor = new Color(0.98f, 0.95f, 0.82f);
-private bool gameStarted = false;
+    private bool gameStarted = false;
     private int repetitions = 0;
     private IEnumerator Start()
     {
@@ -76,14 +75,15 @@ private bool gameStarted = false;
     }
     void GameLogic()
     {
-        
+
 
         if (repetitions >= 28)
         {
             dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
             levelSystem.AddPoints(10);
+
             return;
-            
+
         }
 
         timer += Time.deltaTime; // zwi�kszamy timer o czas, kt�ry up�yn�� od ostatniej klatki

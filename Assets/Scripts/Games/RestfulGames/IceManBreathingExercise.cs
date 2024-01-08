@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -96,7 +95,7 @@ public class IceManBreathingExercise : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            isCounting = false; 
+            isCounting = false;
             StopCounting();
         }
         if (isCounting)
@@ -159,10 +158,11 @@ public class IceManBreathingExercise : MonoBehaviour
         {
             SwapBackgroundAndCommand(outObject, hold2Object, "Hold");
         });
-        sequence.Append(circle.transform.DOScale(1f, timeHold2)).AppendCallback(() => {
+        sequence.Append(circle.transform.DOScale(1f, timeHold2)).AppendCallback(() =>
+        {
             dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound, Back);
             levelSystem.AddPoints(10);
-        }); 
+        });
     }
 
     private void SetObjectProperties(GameObject gameObject, float time, Color color, bool status)

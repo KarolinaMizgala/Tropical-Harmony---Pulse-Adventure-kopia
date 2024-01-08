@@ -1,8 +1,6 @@
 using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -19,9 +17,9 @@ public class TriangleGame : MonoBehaviour
     [SerializeField] private GameObject outObject;
     [SerializeField] private GameObject hold1Object;
 
-[Inject] LevelSystem levelSystem;
-[Inject] DialogSystem dialogSystem;
-    [Inject] SceneService sceneService; 
+    [Inject] LevelSystem levelSystem;
+    [Inject] DialogSystem dialogSystem;
+    [Inject] SceneService sceneService;
     private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f);
     private Color activeColor = new Color(0.98f, 0.95f, 0.82f);
 
@@ -62,8 +60,8 @@ public class TriangleGame : MonoBehaviour
             timeSpan = TimeSpan.FromSeconds(counter);
 
             timeText.text = (timeSpan.Seconds + 1).ToString() + "s";
-           
-            if(counter <= 0 && isOut)
+
+            if (counter <= 0 && isOut)
             {
                 isOut = false;
                 counter = 5f;
@@ -75,7 +73,7 @@ public class TriangleGame : MonoBehaviour
                 isHold = false;
                 counter = 5f;
             }
-           else if (counter <= 0 && !isOut && !isHold)
+            else if (counter <= 0 && !isOut && !isHold)
             {
                 isOut = true;
                 counter = 8f;
@@ -93,11 +91,11 @@ public class TriangleGame : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < 16; i++)
         {
-           
+
             sequence.Append(circle.transform.DOLocalMove(new Vector3(330f, -230f, 0), timeIn)).AppendCallback(() =>
             {
                 SwapBackgroundAndCommand(inObject, outObject, "Out");
-            }); 
+            });
             sequence.Append(circle.transform.DOLocalMove(new Vector3(0f, 318, 0), timeOut)).AppendCallback(() =>
             {
                 SwapBackgroundAndCommand(outObject, hold1Object, "Hold");
@@ -106,7 +104,7 @@ public class TriangleGame : MonoBehaviour
             {
                 SwapBackgroundAndCommand(hold1Object, inObject, "In");
             });
-           
+
 
         }
         sequence.Append(circle.transform.DOLocalMove(new Vector3(330f, -230f, 0), timeIn)).AppendCallback(() =>
@@ -117,11 +115,14 @@ public class TriangleGame : MonoBehaviour
         {
             SwapBackgroundAndCommand(outObject, hold1Object, "Hold");
         });
-    
-       
-        sequence.Append(circle.transform.DOLocalMove(new Vector3(-314f, -230.1f, 0), timeHold)).AppendCallback(() => { isCounting = false; 
-        dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound,Back); 
-         levelSystem.AddPoints(10);});
+
+
+        sequence.Append(circle.transform.DOLocalMove(new Vector3(-314f, -230.1f, 0), timeHold)).AppendCallback(() =>
+        {
+            isCounting = false;
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound, Back);
+            levelSystem.AddPoints(10);
+        });
 
     }
     private void Back()

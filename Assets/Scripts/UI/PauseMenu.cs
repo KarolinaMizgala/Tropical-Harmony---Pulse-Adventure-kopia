@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 /// <summary>
@@ -12,25 +9,25 @@ public class PauseMenu : MonoBehaviour
     /// <summary>
     /// SceneService instance for scene transitions.
     /// </summary>
-    [Inject] 
+    [Inject]
     private SceneService sceneService;
 
     /// <summary>
     /// GameObject for the mute button.
     /// </summary>
-    [SerializeField] 
+    [SerializeField]
     private GameObject muteButton;
 
     /// <summary>
     /// GameObject for the unmute button.
     /// </summary>
-    [SerializeField] 
+    [SerializeField]
     private GameObject unmuteButton;
 
     /// <summary>
     /// GameObject for the pause UI.
     /// </summary>
-    [SerializeField] 
+    [SerializeField]
     private GameObject pauseUI;
 
     /// <summary>

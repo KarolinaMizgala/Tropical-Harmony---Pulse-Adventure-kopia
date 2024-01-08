@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Zenject;
 
 /// <summary>
@@ -104,7 +100,7 @@ public class MainMenu : MonoBehaviour
         if (Application.internetReachability != NetworkReachability.NotReachable)
         {
             playButton.SetActive(true);
-           
+
         }
     }
 

@@ -34,6 +34,6 @@ public class GameModeController : MonoBehaviour
     /// <returns>The current game mode.</returns>
     public GameMode GetGameMode()
     {
-        return currentMode; 
+        return currentMode;
     }
 }

@@ -28,7 +28,7 @@ public class SceneService : MonoBehaviour
         {
             playerPositionManager.SavePlayerPosition(GameObject.FindGameObjectWithTag("Player").transform.position);
         }
-        if(sceneType == SceneType.RestfulScene || sceneType == SceneType.Energetic)
+        if (sceneType == SceneType.RestfulScene || sceneType == SceneType.Energetic)
         {
             playerPositionManager.LoadPlayerPosition();
         }
@@ -39,11 +39,12 @@ public class SceneService : MonoBehaviour
     /// Load a scene asynchronously by scene index.
     /// </summary>
     public void LoadScene(int sceneIndex)
-    {if(GetActivScene() == SceneType.RestfulScene || GetActivScene()==SceneType.Energetic)
+    {
+        if (GetActivScene() == SceneType.RestfulScene || GetActivScene() == SceneType.Energetic)
         {
             playerPositionManager.SavePlayerPosition(GameObject.Find("Player").transform.position);
         }
-    if (sceneIndex == (int)SceneType.RestfulScene || sceneIndex == (int)SceneType.Energetic)
+        if (sceneIndex == (int)SceneType.RestfulScene || sceneIndex == (int)SceneType.Energetic)
         {
             playerPositionManager.LoadPlayerPosition();
         }
@@ -146,7 +147,7 @@ public class SceneService : MonoBehaviour
     }
     public SceneType GetActivScene()
     {
-                Scene scene = SceneManager.GetActiveScene();
-     return (SceneType)scene.buildIndex;
+        Scene scene = SceneManager.GetActiveScene();
+        return (SceneType)scene.buildIndex;
     }
 }

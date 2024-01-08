@@ -3,30 +3,30 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-	private	float			rotateSpeed = 100;
-	private	Vector3			rotateAngle = Vector3.forward;
+    private float rotateSpeed = 100;
+    private Vector3 rotateAngle = Vector3.forward;
 
-	private IEnumerator Start()
-	{
-		
-		while ( true )
-		{
-			int time = Random.Range(1, 5);
+    private IEnumerator Start()
+    {
 
-			yield return new WaitForSeconds(time);
+        while (true)
+        {
+            int time = Random.Range(1, 5);
 
-			int speed	= Random.Range(10, 300);
-			int dir		= Random.Range(0, 2);
+            yield return new WaitForSeconds(time);
 
-			rotateSpeed	= speed;
-			rotateAngle	= new Vector3(0, 0, dir * 2 - 1);
-		}
-	}
+            int speed = Random.Range(10, 300);
+            int dir = Random.Range(0, 2);
 
-	private void Update()
-	{
-		transform.Rotate(rotateAngle * rotateSpeed * Time.deltaTime);
-	}
+            rotateSpeed = speed;
+            rotateAngle = new Vector3(0, 0, dir * 2 - 1);
+        }
+    }
+
+    private void Update()
+    {
+        transform.Rotate(rotateAngle * rotateSpeed * Time.deltaTime);
+    }
 
 
 

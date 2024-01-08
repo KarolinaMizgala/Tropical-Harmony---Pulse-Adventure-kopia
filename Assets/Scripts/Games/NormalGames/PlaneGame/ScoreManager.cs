@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using Zenject.Asteroids;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -13,7 +11,7 @@ public class ScoreManager : MonoBehaviour
     private IEnumerator Start()
     {
         // Wyszukaj obiekt tooltip
-      
+
 
         // Czekaj, a¿ tooltip stanie siê nieaktywny
         while (toolTip.activeSelf)
@@ -33,9 +31,9 @@ public class ScoreManager : MonoBehaviour
             return;
         }
 
-        if (GameObject.FindGameObjectWithTag("Player")!= null)
+        if (GameObject.FindGameObjectWithTag("Player") != null)
         {
-            score += 1* Time.deltaTime;
+            score += 1 * Time.deltaTime;
             scoreText.text = ((int)score).ToString();
         }
     }

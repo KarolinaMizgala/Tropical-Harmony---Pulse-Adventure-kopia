@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -12,12 +10,12 @@ public class GameSceneManager : MonoBehaviour
     [Inject] SceneService sceneService;
     [Inject] DialogSystem dialogSystem;
 
-     private bool tooltipShown;
+    private bool tooltipShown;
 
-   public void Start()
+    public void Start()
     {
         tooltipShown = PlayerPrefs.GetInt("TooltipShown_" + scene.ToString(), 0) == 1;
-        
+
         // Jeśli tooltip nie został wyświetlony, wywołaj metodę wyświetlającą tooltip
         tooltip.SetActive(!tooltipShown);
     }
@@ -28,10 +26,10 @@ public class GameSceneManager : MonoBehaviour
         tooltip.SetActive(false);
     }
 
-    public void OnExit ()
+    public void OnExit()
     {
         dialogSystem.ShowConfirmationDialog("Your points will not be awarded upon exit. Are you sure you want to return to the main gameplay?", BackLastScene, null);
-       
+
 
     }
     private void BackLastScene()

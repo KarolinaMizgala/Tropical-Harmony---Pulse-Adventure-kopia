@@ -1,13 +1,10 @@
-using System;
-using UnityEngine;
-using System.Threading.Tasks;
-using Zenject;
-using System.Globalization;
-using System.Text.Json;
-
 using Azure.Messaging.WebPubSub;
-
 using NativeWebSocket;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
+using UnityEngine;
+using Zenject;
 
 /// <summary>
 /// Class responsible for handling WebSocket connections.
@@ -35,7 +32,7 @@ public class WebSocketClient : MonoBehaviour
 
     private float timer = 5f;
     private float recordingInterval = 0f;
-  
+
 
     /// <summary>
     /// Connects to the WebSocket server with a unique ID.
@@ -61,15 +58,15 @@ public class WebSocketClient : MonoBehaviour
     /// <param name="uniqueId">Unique ID for the WebSocket connection.</param>
     public async Task ConnectAsync(string uniqueId)
     {
-     var connectionString = "Endpoint=https://chatapp-wps-lici52g2mb2vo.webpubsub.azure.com;AccessKey=ZZOZ5UAzuS9mhrrcOL+jG7RHQ8zgCuCeYTtQUQg3yyI=;Version=1.0;";
+        var connectionString = "Endpoint=https://chatapp-wps-lici52g2mb2vo.webpubsub.azure.com;AccessKey=ZZOZ5UAzuS9mhrrcOL+jG7RHQ8zgCuCeYTtQUQg3yyI=;Version=1.0;";
         var hub = "sample_chat";
 
         var serviceClient = new WebPubSubServiceClient(connectionString, hub);
         var url = serviceClient.GetClientAccessUri(userId: $"Unity{uniqueId}", roles: new string[] { "webpubsub.joinLeaveGroup", "webpubsub.sendToGroup" });
-        
+
         websocket = new WebSocket(url.ToString());
-       
-       
+
+
         websocket.OnOpen += () =>
         {
             serviceClient.AddUserToGroup(uniqueId, $"Unity{uniqueId}");
@@ -118,7 +115,7 @@ public class WebSocketClient : MonoBehaviour
                         timer = 5f;
                     }
                     receivedData = heartRate;
-                   
+
                 }
             }
             catch (FormatException ex)
@@ -149,7 +146,7 @@ public class WebSocketClient : MonoBehaviour
 
 #endif
     }
-  
+
 
     /// <summary>
     /// Checks if the WebSocket connection is open.

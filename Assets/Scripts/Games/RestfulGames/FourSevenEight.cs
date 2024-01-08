@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-using Zenject.Asteroids;
 
 public class FourSevenEight : MonoBehaviour
 {
@@ -24,7 +21,7 @@ public class FourSevenEight : MonoBehaviour
     [SerializeField] private GameObject inObject;
     [SerializeField] private GameObject outObject;
     [SerializeField] private GameObject hold1Object;
-   
+
     [Inject] LevelSystem levelSystem;
     [Inject] DialogSystem dialogSystem;
     [Inject] SceneService sceneService;
@@ -65,14 +62,16 @@ public class FourSevenEight : MonoBehaviour
         isCounting = true;
         LogicGame();
     }
-        void LogicGame()
+    void LogicGame()
     {
         if (cycleCount >= 8) // jeśli wykonaliśmy już 16 cykli, nie robimy nic więcej
-        { 
+        {
             isCounting = false;
-            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
+
             levelSystem.AddPoints(10);
-            return; }
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
+            return;
+        }
 
         timer += Time.deltaTime; // zwiększamy timer o czas, który upłynął od ostatniej klatki
 
@@ -112,14 +111,14 @@ public class FourSevenEight : MonoBehaviour
             timeSpan = TimeSpan.FromSeconds(counter);
 
             timeText.text = (timeSpan.Seconds + 1).ToString();
-            if(counter <= 0 && isHold)
+            if (counter <= 0 && isHold)
             {
                 counter = timeOut;
                 SwapBackgroundAndCommand(hold1Object, outObject, "Out");
                 isOut = true;
                 isHold = false;
-            } 
-            else if(counter <= 0 && isOut)
+            }
+            else if (counter <= 0 && isOut)
             {
                 isOut = false;
                 counter = timeIn;
@@ -131,13 +130,13 @@ public class FourSevenEight : MonoBehaviour
                 isHold = true;
                 SwapBackgroundAndCommand(inObject, hold1Object, "Hold");
             }
-            
+
         }
     }
     private IEnumerator Start()
     {
         // Wyszukaj obiekt tooltip
-       var  toolTip = GameObject.Find("Tooltip");
+        var toolTip = GameObject.Find("Tooltip");
 
         // Czekaj, aż tooltip stanie się nieaktywny
         while (toolTip.activeSelf)
