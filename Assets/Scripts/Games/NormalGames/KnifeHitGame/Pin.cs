@@ -11,6 +11,7 @@ public class Pin : MonoBehaviour
 
     [Inject] DialogSystem dialogSystem;
     [Inject] LevelSystem levelSystem;
+    [Inject] SceneService sceneService;
 
     private Movement2D movement2D;
 
@@ -32,26 +33,25 @@ public class Pin : MonoBehaviour
             movement2D.MoveTo(Vector3.zero);
             transform.SetParent(collision.transform);
 
-
-
-            Camera.main.GetComponent<ShakeCamera>().Shake(0.1f, 1);
-
             Destroy(this);
         }
         else if (collision.CompareTag("Pin"))
         {
-            Debug.Log("GameOver");
+           Debug.Log("GameOver");
             if (gameTime > 2f)
             {
                 levelSystem.AddPoints(5);
                 gameTime = 0;
             }
-            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, null);
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
         }
 
 
     }
-
+    public void Back()
+    {
+        sceneService.LoadScene(SceneType.Energetic);
+    }
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

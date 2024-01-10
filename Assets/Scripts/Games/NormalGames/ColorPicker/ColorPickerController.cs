@@ -78,12 +78,16 @@ public class ColorPickerController : MonoBehaviour
         }
         else
         {
-            if (gameTime > 1f)
+            if (gameTime > 2f)
             {
-                levelSystem.AddPoints(1);
+                levelSystem.AddPoints(5);
             }
-            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, null);
+            dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
         }
+    }
+    private void Back()
+    {
+        sceneService.LoadScene(SceneType.Energetic);
     }
     private void Restart()
     {

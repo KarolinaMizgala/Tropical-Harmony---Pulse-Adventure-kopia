@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 5245060454405847791}
   - component: {fileID: 2505752169289289258}
   - component: {fileID: 5975567492586025530}
+  - component: {fileID: 1277134335451626184}
   m_Layer: 5
   m_Name: Pin
   m_TagString: Pin
@@ -188,6 +189,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10, y: 153.23022}
   m_EdgeRadius: 0
+--- !u!114 &1277134335451626184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637457819967522838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 2
 --- !u!1 &6587115750707694840
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +11,7 @@ public class ColorJumpGameController : MonoBehaviour
     [SerializeField] private Transform wallPrefab;
     [SerializeField] private Transform leftWalls;
     [SerializeField] private Transform rightWalls;
+    [SerializeField] private TMP_Text score;
 
     [SerializeField] private int currentLevel = 1;
     private int maxLevel = 7;
@@ -21,10 +23,15 @@ public class ColorJumpGameController : MonoBehaviour
     private readonly float wallMaxScaleY = 108;
     private readonly int[] wallCountByLevel = new int[7] { 1, 2, 3, 4, 5, 6, 7 };
     private readonly int[] needLevelUpScore = new int[7] { 1, 2, 4, 8, 16, 32, 64 };
+    private float gameTime = 0f;
     private void Awake()
     {
         SpawnWalls();
         SetColors();
+    }
+    private void Update()
+    {
+        gameTime += Time.deltaTime;
     }
     private void SpawnWalls()
     {
@@ -86,6 +93,7 @@ public class ColorJumpGameController : MonoBehaviour
     {
         currentScore++;
 
+        score.text = currentScore.ToString(); 
         if (currentLevel < maxLevel && needLevelUpScore[currentLevel] < currentScore)
         {
             currentLevel++;
@@ -95,6 +103,10 @@ public class ColorJumpGameController : MonoBehaviour
     }
     public void GameOver()
     {
+        if (gameTime > 2f)
+        {
+            levelSystem.AddPoints(5);
+        }
         dialogSystem.ShowConfirmationDialog("Do you want to try again?", () =>
         {
             sceneService.LoadScene(SceneType.ColorJumpGame);
