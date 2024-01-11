@@ -101,4 +101,13 @@ public class DialogWindow : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+ /// <summary>
+    /// Checks if the dialog window is visible.
+    /// </summary>
+    /// <returns>Whether the dialog window is visible.</returns>
+    public bool IsVisible()
+    {
+        return gameObject.activeSelf;
+    }
 }

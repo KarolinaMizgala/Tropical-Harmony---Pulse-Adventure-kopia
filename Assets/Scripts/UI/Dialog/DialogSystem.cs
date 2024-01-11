@@ -11,6 +11,7 @@ public class DialogSystem : MonoBehaviour
     /// </summary>
     [Inject]
     private DialogWindow dialogWindowPrefab;
+   
 
     /// <summary>
     /// Shows a confirmation dialog with a specified message and actions for confirm and cancel.
@@ -26,6 +27,9 @@ public class DialogSystem : MonoBehaviour
         dialogInstance.SetMessage(message);
         dialogInstance.SetOnConfirmAction(onConfirm);
         dialogInstance.SetOnCancelAction(onCancel);
+
+
+     
     }
     public void OnCancel()
       {
@@ -36,4 +40,18 @@ public class DialogSystem : MonoBehaviour
         }
 
         }
+
+        /// <summary>
+    /// Checks if the dialog window is visible.
+    /// </summary>
+    /// <returns>Whether the dialog window is visible.</returns>
+    public bool IsDialogVisible()
+    {
+        DialogWindow dialogWindow = FindObjectOfType<DialogWindow>();
+        if (dialogWindow != null)
+        {
+            return dialogWindow.IsVisible();
+        }
+        return false;
+    }
 }

@@ -5,52 +5,75 @@ using TMPro;
 using UnityEngine;
 using Zenject;
 
+/// <summary>
+/// Manages the logic for the BoxGame, a mini-game involving object movements.
+/// </summary>
 public class BoxGame : MonoBehaviour
 {
-    [SerializeField] private GameObject circle;
-    [SerializeField] private TMP_Text command;
-
-    [SerializeField] private TMP_Text timeText;
+    [SerializeField] private GameObject circle; // Reference to the circle object.
+    [SerializeField] private TMP_Text command;  // UI text for displaying commands.
+    [SerializeField] private TMP_Text timeText; // UI text for displaying time.
 
     [Header("Objects")]
-    [SerializeField] private GameObject inObject;
-    [SerializeField] private GameObject outObject;
-    [SerializeField] private GameObject hold1Object;
-    [SerializeField] private GameObject hold2Object;
+    [SerializeField] private GameObject inObject;    // In object.
+    [SerializeField] private GameObject outObject;   // Out object.
+    [SerializeField] private GameObject hold1Object; // Hold1 object.
+    [SerializeField] private GameObject hold2Object; // Hold2 object.
 
-    [Inject] LevelSystem levelSystem;
-    [Inject] DialogSystem dialogSystem;
-    [Inject] SceneService sceneService;
-    private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f);
-    private Color activeColor = new Color(0.98f, 0.95f, 0.82f);
+    [Inject] LevelSystem levelSystem;      // Reference to the LevelSystem.
+    [Inject] DialogSystem dialogSystem;    // Reference to the DialogSystem.
+    [Inject] SceneService sceneService;    // Reference to the SceneService.
 
-    private float counter = 4f;
-    private bool isCounting = false;
-    TimeSpan timeSpan;
+    private Color deactiveColor = new Color(0.2f, 0.23f, 0.35f); // Color for deactivated objects.
+    private Color activeColor = new Color(0.98f, 0.95f, 0.82f);  // Color for activated objects.
 
-    private float time = 4f;
+    private float counter = 4f;     // Counter for time-related operations.
+    private bool isCounting = false; // Flag indicating whether the countdown is active.
+    private TimeSpan timeSpan;       // TimeSpan used for displaying time.
+    GameObject toolTip;               // Reference to the tooltip object.
+    private float time = 4f;         // Default time value.
 
+    /// <summary>
+    /// Coroutine that initializes the game and starts the first round.
+    /// </summary>
     private IEnumerator Start()
     {
-        var toolTip = GameObject.Find("Tooltip");
+        toolTip = GameObject.Find("Tooltip");
+
+        // Wait until the tooltip is not active.
         while (toolTip.activeSelf)
         {
             yield return null;
         }
 
-        // Odliczaj 3 sekundy
+        // Countdown for 3 seconds.
         for (int i = 3; i > 0; i--)
         {
             command.text = i.ToString();
             yield return new WaitForSeconds(1f);
         }
 
-        // Rozpocznij grę
+        // Start the first round of the game.
         FirtsRound();
         yield return null;
     }
+
+    /// <summary>
+    /// Update is called once per frame.
+    /// </summary>
     private void Update()
     {
+        // Pause the game if the tooltip is active.
+        if (toolTip.activeSelf || dialogSystem.IsDialogVisible())
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+
+        // Update the countdown timer.
         if (isCounting)
         {
             counter -= Time.deltaTime;
@@ -63,8 +86,13 @@ public class BoxGame : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Initiates the first round of the game.
+    /// </summary>
     private void FirtsRound()
     {
+        // Set initial backgrounds and commands.
         SetBackground(inObject, activeColor, true);
         SetBackground(outObject, deactiveColor, false);
         SetBackground(hold1Object, deactiveColor, false);
@@ -72,6 +100,8 @@ public class BoxGame : MonoBehaviour
 
         command.text = "In";
         isCounting = true;
+
+        // Create a sequence of circle movements.
         Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < 15; i++)
         {
@@ -91,8 +121,9 @@ public class BoxGame : MonoBehaviour
             {
                 SwapBackgroundAndCommand(hold2Object, inObject, "In");
             });
-
         }
+
+        // Final movements and actions.
         sequence.Append(circle.transform.DOLocalMove(new Vector3(-197.5f, 197.5f, 0), time)).AppendCallback(() =>
         {
             SwapBackgroundAndCommand(inObject, hold1Object, "Hold");
@@ -111,9 +142,14 @@ public class BoxGame : MonoBehaviour
             dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound, BackLastScene);
             levelSystem.AddPoints(10);
         });
-
     }
 
+    /// <summary>
+    /// Swaps backgrounds and updates the command text.
+    /// </summary>
+    /// <param name="deactivateObject">Object to deactivate.</param>
+    /// <param name="activateObject">Object to activate.</param>
+    /// <param name="commandText">New command text.</param>
     private void SwapBackgroundAndCommand(GameObject deactivateObject, GameObject activateObject, string commandText)
     {
         SetBackground(deactivateObject, deactiveColor, false);
@@ -121,7 +157,12 @@ public class BoxGame : MonoBehaviour
         command.text = commandText;
     }
 
-
+    /// <summary>
+    /// Sets the background of the specified object with the given color and status.
+    /// </summary>
+    /// <param name="gameObject">Object whose background to set.</param>
+    /// <param name="color">Color to set.</param>
+    /// <param name="status">Status indicating whether to activate the background.</param>
     private void SetBackground(GameObject gameObject, Color color, bool status)
     {
         var backGround = gameObject.transform.GetChild(0);
@@ -131,6 +172,10 @@ public class BoxGame : MonoBehaviour
         var textTime = gameObject.transform.GetChild(2).GetComponent<TMP_Text>();
         textTime.color = color;
     }
+
+    /// <summary>
+    /// Loads the previous scene.
+    /// </summary>
     private void BackLastScene()
     {
         sceneService.LoadScene(SceneType.RestfulScene);

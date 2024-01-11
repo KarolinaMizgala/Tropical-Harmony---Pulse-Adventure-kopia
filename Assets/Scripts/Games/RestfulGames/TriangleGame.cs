@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine;
 using Zenject;
 
+/// <summary>
+/// Manages the logic for the TriangleGame, a mini-game involving object movements.
+/// </summary>
 public class TriangleGame : MonoBehaviour
 {
     [SerializeField] private GameObject circle;
@@ -32,28 +35,45 @@ public class TriangleGame : MonoBehaviour
     private float timeHold = 5f;
     private bool isOut = false;
     private bool isHold = false;
+    private GameObject toolTip;
 
+    /// <summary>
+    /// Coroutine that initializes the game and starts the first round.
+    /// </summary>
     private IEnumerator Start()
     {
-        var toolTip = GameObject.Find("Tooltip");
-        while (toolTip.activeSelf && toolTip!=null)
+        toolTip = GameObject.Find("Tooltip");
+
+        while (toolTip.activeSelf)
         {
             yield return null;
         }
 
-        // Odliczaj 3 sekundy
+        // Countdown for 3 seconds
         for (int i = 3; i > 0; i--)
         {
             command.text = i.ToString();
             yield return new WaitForSeconds(1f);
         }
 
-        // Rozpocznij grę
+        // Start the game
         FirtsRound();
         yield return null;
     }
+
+    /// <summary>
+    /// Update is called once per frame.
+    /// </summary>
     private void Update()
     {
+        if (toolTip.activeSelf || dialogSystem.IsDialogVisible())
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
         if (isCounting)
         {
             counter -= Time.deltaTime;
@@ -66,7 +86,6 @@ public class TriangleGame : MonoBehaviour
                 isOut = false;
                 counter = 5f;
                 isHold = true;
-
             }
             else if (counter <= 0 && isHold)
             {
@@ -80,6 +99,10 @@ public class TriangleGame : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Initiates the first round of the game.
+    /// </summary>
     private void FirtsRound()
     {
         SetBackground(inObject, activeColor, true);
@@ -91,7 +114,6 @@ public class TriangleGame : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < 16; i++)
         {
-
             sequence.Append(circle.transform.DOLocalMove(new Vector3(330f, -230f, 0), timeIn)).AppendCallback(() =>
             {
                 SwapBackgroundAndCommand(inObject, outObject, "Out");
@@ -104,9 +126,8 @@ public class TriangleGame : MonoBehaviour
             {
                 SwapBackgroundAndCommand(hold1Object, inObject, "In");
             });
-
-
         }
+
         sequence.Append(circle.transform.DOLocalMove(new Vector3(330f, -230f, 0), timeIn)).AppendCallback(() =>
         {
             SwapBackgroundAndCommand(inObject, outObject, "Out");
@@ -115,20 +136,17 @@ public class TriangleGame : MonoBehaviour
         {
             SwapBackgroundAndCommand(outObject, hold1Object, "Hold");
         });
-
-
         sequence.Append(circle.transform.DOLocalMove(new Vector3(-314f, -230.1f, 0), timeHold)).AppendCallback(() =>
         {
             isCounting = false;
             dialogSystem.ShowConfirmationDialog("Do you want to try again?", FirtsRound, Back);
             levelSystem.AddPoints(10);
         });
+    }
 
-    }
-    private void Back()
-    {
-        sceneService.LoadScene(SceneType.RestfulScene);
-    }
+    /// <summary>
+    /// Switches background and updates the command text.
+    /// </summary>
     private void SwapBackgroundAndCommand(GameObject deactivateObject, GameObject activateObject, string commandText)
     {
         SetBackground(deactivateObject, deactiveColor, false);
@@ -136,7 +154,9 @@ public class TriangleGame : MonoBehaviour
         command.text = commandText;
     }
 
-
+    /// <summary>
+    /// Sets the background of the specified object with the given color and status.
+    /// </summary>
     private void SetBackground(GameObject gameObject, Color color, bool status)
     {
         var backGround = gameObject.transform.GetChild(0);
@@ -145,5 +165,13 @@ public class TriangleGame : MonoBehaviour
         textCommand.color = color;
         var textTime = gameObject.transform.GetChild(2).GetComponent<TMP_Text>();
         textTime.color = color;
+    }
+
+    /// <summary>
+    /// Loads the previous scene.
+    /// </summary>
+    private void Back()
+    {
+        sceneService.LoadScene(SceneType.RestfulScene);
     }
 }

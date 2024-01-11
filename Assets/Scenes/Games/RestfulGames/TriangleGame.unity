@@ -671,7 +671,7 @@ PrefabInstance:
     - target: {fileID: 36785779101881164, guid: f13a2548b479ce24da04a7dc22ba5a34,
         type: 3}
       propertyPath: m_text
-      value: BOX Breathing
+      value: endurance
       objectReference: {fileID: 0}
     - target: {fileID: 46830687984024789, guid: f13a2548b479ce24da04a7dc22ba5a34,
         type: 3}
@@ -686,9 +686,11 @@ PrefabInstance:
     - target: {fileID: 3009410696313869954, guid: f13a2548b479ce24da04a7dc22ba5a34,
         type: 3}
       propertyPath: m_text
-      value: Used by Navy Seals to start alert and focused, the Box method can lower
-        blood pressure and calm the parasympathetic nervous system so that you can
-        make the right decision on the right time.
+      value: This type of pattern has been used by US olympic swimmers, professional
+        athletes, and world-record breakers to improve performance. By building up
+        a moderate hunger for air durning this exercise, you can train your body
+        to become accustomed to higher levels of Co2 and stimulate the effects of
+        high-alititude training.
       objectReference: {fileID: 0}
     - target: {fileID: 8446130288710509112, guid: f13a2548b479ce24da04a7dc22ba5a34,
         type: 3}
