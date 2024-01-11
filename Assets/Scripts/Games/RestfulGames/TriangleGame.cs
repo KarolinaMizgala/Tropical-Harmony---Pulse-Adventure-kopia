@@ -36,7 +36,7 @@ public class TriangleGame : MonoBehaviour
     private IEnumerator Start()
     {
         var toolTip = GameObject.Find("Tooltip");
-        while (toolTip.activeSelf)
+        while (toolTip.activeSelf && toolTip!=null)
         {
             yield return null;
         }

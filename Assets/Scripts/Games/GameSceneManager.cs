@@ -7,6 +7,8 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private SceneType scene;
     [SerializeField] private GameObject tooltip;
 
+    public bool isActive = false;
+
     [Inject] SceneService sceneService;
     [Inject] DialogSystem dialogSystem;
 
@@ -38,6 +40,7 @@ public class GameSceneManager : MonoBehaviour
     }
     public void OnQuestionClick()
     {
+        isActive = true;
         tooltip.SetActive(true);
     }
 }

@@ -24,14 +24,18 @@ public class ColorJumpGameController : MonoBehaviour
     private readonly int[] wallCountByLevel = new int[7] { 1, 2, 3, 4, 5, 6, 7 };
     private readonly int[] needLevelUpScore = new int[7] { 1, 2, 4, 8, 16, 32, 64 };
     private float gameTime = 0f;
+
+
     private void Awake()
     {
+       
         SpawnWalls();
         SetColors();
     }
     private void Update()
     {
         gameTime += Time.deltaTime;
+        
     }
     private void SpawnWalls()
     {

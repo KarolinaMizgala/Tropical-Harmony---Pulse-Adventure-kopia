@@ -27,4 +27,13 @@ public class DialogSystem : MonoBehaviour
         dialogInstance.SetOnConfirmAction(onConfirm);
         dialogInstance.SetOnCancelAction(onCancel);
     }
+    public void OnCancel()
+      {
+        DialogWindow dialogWindow = FindObjectOfType<DialogWindow>();
+        if (dialogWindow != null)
+        {
+            dialogWindow.CloseDialog();
+        }
+
+        }
 }

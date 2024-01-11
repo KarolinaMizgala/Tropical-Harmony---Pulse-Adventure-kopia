@@ -60,6 +60,7 @@ public class FourSevenEight : MonoBehaviour
     {
         cycleCount = 0;
         isCounting = true;
+        levelSystem.AddPoints(10);
         LogicGame();
     }
     void LogicGame()
@@ -68,7 +69,6 @@ public class FourSevenEight : MonoBehaviour
         {
             isCounting = false;
 
-            levelSystem.AddPoints(10);
             dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
             return;
         }
@@ -185,6 +185,7 @@ public class FourSevenEight : MonoBehaviour
     }
     private void Back()
     {
+        levelSystem.AddPoints(10);
         sceneService.LoadScene(SceneType.RestfulScene);
     }
 }

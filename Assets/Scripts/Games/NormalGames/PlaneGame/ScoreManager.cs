@@ -10,7 +10,6 @@ public class ScoreManager : MonoBehaviour
     private bool gameStarted = false;
     private IEnumerator Start()
     {
-        // Wyszukaj obiekt tooltip
 
 
         // Czekaj, a¿ tooltip stanie siê nieaktywny

@@ -435,8 +435,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prevScene: 1
-  scene: 7
+  scene: 12
   tooltip: {fileID: 1271170142}
+  isActive: 0
 --- !u!114 &321794736
 MonoBehaviour:
   m_ObjectHideFlags: 0

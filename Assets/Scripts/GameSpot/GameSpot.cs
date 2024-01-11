@@ -8,7 +8,7 @@ public class GameSpot : MonoBehaviour
     [SerializeField] private SceneType sceneType;
     private bool isDialogShown = false;
     private SceneType scene;
-    [SerializeField] private string text = "You've reached the mini-game area. Are you ready for a scene change?";
+    [SerializeField] private string text = "You've reached the dashboard. Are you ready for a scene change?";
     private string dialogShownKey;
     private void Start()
     {
@@ -17,7 +17,7 @@ public class GameSpot : MonoBehaviour
         isDialogShown = PlayerPrefs.GetInt(dialogShownKey, 0) == 1;
     }
     // Start is called before the first frame update
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
@@ -39,6 +39,7 @@ public class GameSpot : MonoBehaviour
             isDialogShown = false;
         }
     }
+    
     private void OnYesClick()
     {
         sceneService.SetPrevScene(sceneService.GetActivScene());

@@ -71,7 +71,9 @@ public class YogaNose : MonoBehaviour
     void Restart()
     {
         repetitions = 0;
+        levelSystem.AddPoints(10);
         GameLogic();
+    
     }
     void GameLogic()
     {
@@ -80,7 +82,7 @@ public class YogaNose : MonoBehaviour
         if (repetitions >= 28)
         {
             dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
-            levelSystem.AddPoints(10);
+           
 
             return;
 
@@ -148,6 +150,7 @@ public class YogaNose : MonoBehaviour
     }
     private void Back()
     {
+        levelSystem.AddPoints(10);
         sceneService.LoadScene(SceneType.RestfulScene);
     }
 }
