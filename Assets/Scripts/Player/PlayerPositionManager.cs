@@ -1,8 +1,14 @@
 using UnityEngine;
 
+/// <summary>
+/// Manages the player's position in the game.
+/// </summary>
 public class PlayerPositionManager : MonoBehaviour
 {
-    // Metoda do zapisywania pozycji gracza
+    /// <summary>
+    /// Saves the player's position.
+    /// </summary>
+    /// <param name="position">The position to save.</param>
     public void SavePlayerPosition(Vector3 position)
     {
         PlayerPrefs.SetFloat("PlayerPositionX", position.x);
@@ -11,7 +17,10 @@ public class PlayerPositionManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // Metoda do wczytywania pozycji gracza
+    /// <summary>
+    /// Loads the player's position.
+    /// </summary>
+    /// <returns>The loaded position.</returns>
     public Vector3 LoadPlayerPosition()
     {
         if (PlayerPrefs.HasKey("PlayerPositionX") && PlayerPrefs.HasKey("PlayerPositionY") && PlayerPrefs.HasKey("PlayerPositionZ"))
@@ -23,7 +32,7 @@ public class PlayerPositionManager : MonoBehaviour
             return new Vector3(x, y, z);
         }
 
-        // Domyœlna pozycja, jeœli nie ma zapisanej pozycji gracza
+        // Default position if there is no saved player position
         return Vector3.zero;
     }
 }

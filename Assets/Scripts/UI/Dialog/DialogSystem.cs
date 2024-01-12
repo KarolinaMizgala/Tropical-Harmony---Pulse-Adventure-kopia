@@ -11,7 +11,7 @@ public class DialogSystem : MonoBehaviour
     /// </summary>
     [Inject]
     private DialogWindow dialogWindowPrefab;
-   
+
 
     /// <summary>
     /// Shows a confirmation dialog with a specified message and actions for confirm and cancel.
@@ -29,19 +29,24 @@ public class DialogSystem : MonoBehaviour
         dialogInstance.SetOnCancelAction(onCancel);
 
 
-     
+
     }
+    /// <summary>
+    /// Handles the cancel action in the dialog system.
+    /// </summary>
     public void OnCancel()
-      {
+    {
+        // Find the DialogWindow object in the scene
         DialogWindow dialogWindow = FindObjectOfType<DialogWindow>();
+
+        // If the DialogWindow object is found, close the dialog
         if (dialogWindow != null)
         {
             dialogWindow.CloseDialog();
         }
+    }
 
-        }
-
-        /// <summary>
+    /// <summary>
     /// Checks if the dialog window is visible.
     /// </summary>
     /// <returns>Whether the dialog window is visible.</returns>

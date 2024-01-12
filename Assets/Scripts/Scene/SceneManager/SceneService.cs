@@ -18,7 +18,10 @@ public class SceneService : MonoBehaviour
     /// </summary>
     public event SceneLoadedHandler OnSceneLoaded;
     private SceneType prevScene;
-    [Inject] PlayerPositionManager playerPositionManager;
+
+    [Inject] 
+    private PlayerPositionManager playerPositionManager; // Manages the player's position
+
     /// <summary>
     /// Load a scene asynchronously.
     /// </summary>
@@ -136,15 +139,28 @@ public class SceneService : MonoBehaviour
 
         OnSceneLoaded?.Invoke(sceneType);
     }
-
+    /// <summary>
+    /// Gets the previous scene.
+    /// </summary>
+    /// <returns>The previous scene.</returns>
     public SceneType GetPrevScene()
     {
         return prevScene;
     }
+
+    /// <summary>
+    /// Sets the previous scene.
+    /// </summary>
+    /// <param name="scene">The scene to set as the previous scene.</param>
     public void SetPrevScene(SceneType scene)
     {
         prevScene = scene;
     }
+
+    /// <summary>
+    /// Gets the active scene.
+    /// </summary>
+    /// <returns>The active scene.</returns>
     public SceneType GetActivScene()
     {
         Scene scene = SceneManager.GetActiveScene();

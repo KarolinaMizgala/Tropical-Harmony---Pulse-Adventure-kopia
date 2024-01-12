@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Class representing the player in the ColorJump game.
+/// </summary>
 public class ColorJumpPlayer : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 15f;
@@ -11,6 +14,9 @@ public class ColorJumpPlayer : MonoBehaviour
     private Rigidbody2D rb2D;
     private SpriteRenderer spriteRenderer;
 
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -19,6 +25,10 @@ public class ColorJumpPlayer : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         StartCoroutine(nameof(UpdateInput));
     }
+
+    /// <summary>
+    /// Coroutine that waits for the player's input to jump.
+    /// </summary>
     private IEnumerator UpdateInput()
     {
         while (true)
@@ -30,15 +40,27 @@ public class ColorJumpPlayer : MonoBehaviour
             yield return null;
         }
     }
+
+    /// <summary>
+    /// Makes the player jump.
+    /// </summary>
     private void JumpTo()
     {
         rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);
     }
+
+    /// <summary>
+    /// Reverses the player's direction on the X axis.
+    /// </summary>
     private void ReverseXDir()
     {
         float x = -Mathf.Sign(rb2D.velocity.x);
         rb2D.velocity = new Vector2(x * moveSpeed, rb2D.velocity.y);
     }
+
+    /// <summary>
+    /// Handles collision with a wall or a death wall.
+    /// </summary>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Wall"))
@@ -59,12 +81,20 @@ public class ColorJumpPlayer : MonoBehaviour
             PlayerDie();
         }
     }
+
+    /// <summary>
+    /// Coroutine that disables and enables the player's collider.
+    /// </summary>
     private IEnumerator ColliderOnOfAnimation()
     {
         circleCollider2D.enabled = false;
         yield return new WaitForSeconds(0.1f);
         circleCollider2D.enabled = true;
     }
+
+    /// <summary>
+    /// Handles the player's death.
+    /// </summary>
     private void PlayerDie()
     {
         gameController.GameOver();

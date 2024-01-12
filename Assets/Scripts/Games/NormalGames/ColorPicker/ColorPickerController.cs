@@ -3,9 +3,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
+/// <summary>
+/// Controls the color picking game.
+/// </summary>
 public class ColorPickerController : MonoBehaviour
 {
-
     [SerializeField]
     private Color[] colorPalette;
     [SerializeField]
@@ -29,10 +31,17 @@ public class ColorPickerController : MonoBehaviour
     private int otherBlockIndex;
     private float gameTime = 0f;
 
+    /// <summary>
+    /// Updates the game time every frame.
+    /// </summary>
     private void Update()
     {
         gameTime += Time.deltaTime;
     }
+
+    /// <summary>
+    /// Sets up the game when the script instance is being loaded.
+    /// </summary>
     private void Awake()
     {
         blockList = blockSpawner.SpawnBlocks(blockCount);
@@ -44,6 +53,9 @@ public class ColorPickerController : MonoBehaviour
         SetColors();
     }
 
+    /// <summary>
+    /// Sets the colors for the blocks.
+    /// </summary>
     private void SetColors()
     {
         difficultyModifier *= 0.92f;
@@ -54,7 +66,6 @@ public class ColorPickerController : MonoBehaviour
         otherOneColor = new Color(currentColor.r - diff, currentColor.g - diff, currentColor.b - diff);
 
         otherBlockIndex = Random.Range(0, blockList.Count);
-        Debug.Log(otherBlockIndex);
 
         for (int i = 0; i < blockList.Count; ++i)
         {
@@ -69,9 +80,12 @@ public class ColorPickerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the clicked block is the correct one.
+    /// </summary>
+    /// <param name="color">The color of the clicked block.</param>
     public void CheckBlock(Color color)
     {
-
         if (blockList[otherBlockIndex].Color == color)
         {
             SetColors();
@@ -85,14 +99,21 @@ public class ColorPickerController : MonoBehaviour
             dialogSystem.ShowConfirmationDialog("Do you want to try again?", Restart, Back);
         }
     }
+
+    /// <summary>
+    /// Goes back to the previous scene.
+    /// </summary>
     private void Back()
     {
         sceneService.LoadScene(SceneType.Energetic);
     }
+
+    /// <summary>
+    /// Restarts the current scene.
+    /// </summary>
     private void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         gameTime = 0f;
     }
 }
-

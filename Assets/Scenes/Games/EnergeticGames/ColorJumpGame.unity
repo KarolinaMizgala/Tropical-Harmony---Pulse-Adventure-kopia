@@ -644,8 +644,8 @@ RectTransform:
   m_Children:
   - {fileID: 498172317}
   - {fileID: 915078299}
-  - {fileID: 74199449}
   - {fileID: 1358139772}
+  - {fileID: 74199449}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -668,6 +668,7 @@ MonoBehaviour:
   prevScene: 2
   scene: 5
   tooltip: {fileID: 74199448}
+  isActive: 0
 --- !u!1 &721337346
 GameObject:
   m_ObjectHideFlags: 0

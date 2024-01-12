@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls the first person camera character.
+/// </summary>
 public class FisrtPersonController : MonoBehaviour
 {
 
@@ -62,7 +65,7 @@ public class FisrtPersonController : MonoBehaviour
     public float sprintFOV = 80f;
     public float sprintFOVStepTime = 10f;
 
-   
+
 
     // Internal Variables
     private bool isSprinting = false;
@@ -101,7 +104,9 @@ public class FisrtPersonController : MonoBehaviour
     #endregion
 
 
-
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -117,7 +122,9 @@ public class FisrtPersonController : MonoBehaviour
             sprintCooldownReset = sprintCooldown;
         }
     }
-
+    /// <summary>
+    /// Start is called before the first frame update.
+    /// </summary>
     void Start()
     {
         if (lockCursor)
@@ -125,13 +132,13 @@ public class FisrtPersonController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        
-
-       
     }
 
     float camRotation;
 
+    /// <summary>
+    /// Update is called once per frame.
+    /// </summary>
     private void Update()
     {
         #region Camera
@@ -246,7 +253,7 @@ public class FisrtPersonController : MonoBehaviour
             }
 
             // Handles sprintBar 
-          
+
         }
 
         #endregion
@@ -286,9 +293,11 @@ public class FisrtPersonController : MonoBehaviour
 
         CheckGround();
 
-      
-    }
 
+    }
+    /// <summary>
+    /// FixedUpdate is called every fixed framerate frame.
+    /// </summary>
     void FixedUpdate()
     {
         #region Movement
@@ -332,7 +341,7 @@ public class FisrtPersonController : MonoBehaviour
                         Crouch();
                     }
 
-                   
+
                 }
 
                 rb.AddForce(velocityChange, ForceMode.VelocityChange);
@@ -342,7 +351,7 @@ public class FisrtPersonController : MonoBehaviour
             {
                 isSprinting = false;
 
-               
+
 
                 targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
 
@@ -360,7 +369,9 @@ public class FisrtPersonController : MonoBehaviour
         #endregion
     }
 
-    // Sets isGrounded based on a raycast sent straigth down from the player object
+    /// <summary>
+    /// Checks if the player is on the ground.
+    /// </summary>
     private void CheckGround()
     {
         Vector3 origin = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * .5f), transform.position.z);
@@ -377,7 +388,9 @@ public class FisrtPersonController : MonoBehaviour
             isGrounded = false;
         }
     }
-
+    /// <summary>
+    /// Makes the player jump.
+    /// </summary>
     private void Jump()
     {
         // Adds force to the player rigidbody to jump
@@ -393,7 +406,9 @@ public class FisrtPersonController : MonoBehaviour
             Crouch();
         }
     }
-
+    /// <summary>
+    /// Makes the player crouch or stand up.
+    /// </summary>
     private void Crouch()
     {
         // Stands player up to full height

@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
+/// <summary>
+/// Represents the game board.
+/// </summary>
 public class Board : MonoBehaviour
 {
     [SerializeField]
@@ -23,10 +26,24 @@ public class Board : MonoBehaviour
     private Vector2Int puzzleSize = new Vector2Int(4, 4);
     private float neighborTileDistance = 136;
 
+    /// <summary>
+    /// Gets or sets the position of the empty tile.
+    /// </summary>
     public Vector3 EmptyTilePosition { set; get; }
+
+    /// <summary>
+    /// Gets the playtime.
+    /// </summary>
     public int Playtime { private set; get; } = 0;
+
+    /// <summary>
+    /// Gets the move count.
+    /// </summary>
     public int MoveCount { private set; get; } = 0;
 
+    /// <summary>
+    /// Starts the game when the script instance is being loaded.
+    /// </summary>
     private IEnumerator Start()
     {
         tileList = new List<Tile>();
@@ -43,6 +60,9 @@ public class Board : MonoBehaviour
         StartCoroutine("CalculatePlaytime");
     }
 
+    /// <summary>
+    /// Spawns the tiles.
+    /// </summary>
     private void SpawnTiles()
     {
         for (int y = 0; y < puzzleSize.y; ++y)
@@ -59,6 +79,9 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shuffles the tiles.
+    /// </summary>
     private IEnumerator OnSuffle()
     {
         float current = 0;
@@ -79,6 +102,10 @@ public class Board : MonoBehaviour
         EmptyTilePosition = tileList[tileList.Count - 1].GetComponent<RectTransform>().localPosition;
     }
 
+    /// <summary>
+    /// Checks if a tile can be moved.
+    /// </summary>
+    /// <param name="tile">The tile to check.</param>
     public void IsMoveTile(Tile tile)
     {
         if (Vector3.Distance(EmptyTilePosition, tile.GetComponent<RectTransform>().localPosition) == neighborTileDistance)
@@ -93,6 +120,9 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the game is over.
+    /// </summary>
     public void IsGameOver()
     {
         List<Tile> tiles = tileList.FindAll(x => x.IsCorrected == true);
@@ -110,6 +140,9 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calculates the playtime.
+    /// </summary>
     private IEnumerator CalculatePlaytime()
     {
         while (true)
